@@ -5,26 +5,24 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToMany;
 use App\Repository\EmployeRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EmployeRepository::class)
  */
 class Employe extends Utilisateur
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("emp:read")
      */
     private $poste;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("emp:read")
      */
     private $service;
 
@@ -36,22 +34,21 @@ class Employe extends Utilisateur
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("emp:read")
      */
     private $photo;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("emp:read")
      */
     private $date_recrutement;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("emp:read")
      */
     private $diplome;
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getPoste(): ?string
     {
