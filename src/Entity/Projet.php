@@ -6,9 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
 use App\Repository\ProjetRepository;
 use Doctrine\ORM\Mapping\ManyToMany;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProjetRepository::class)
+ * @ApiResource()
  */
 class Projet
 {
@@ -16,51 +19,61 @@ class Projet
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *@Groups("emp:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("emp:read")
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("emp:read")
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("emp:read")
      */
     private $dateFin;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("emp:read")
      */
     private $cout;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("emp:read")
      */
     private $typeProjet;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("emp:read")
      */
     private $maintenance;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("emp:read")
      */
     private $devise;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("emp:read")
      */
     private $pays;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("emp:read")
      */
     private $coutEstime;
     /**
@@ -84,6 +97,7 @@ class Projet
     /**
      *
      * @ManyToMany(targetEntity="App\Entity\Employe", inversedBy="projet")
+     * @Groups("emp:read")
      *
      */
     private $employe;

@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EntrepriseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EntrepriseRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=EntrepriseRepository::class)
+ * @ApiResource()
  */
 class Entreprise
 {

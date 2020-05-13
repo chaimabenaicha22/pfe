@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToMany;
 use App\Repository\EmployeRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EmployeRepository::class)
+ * @ApiResource()
  */
 class Employe extends Utilisateur
 {
@@ -29,6 +31,8 @@ class Employe extends Utilisateur
     /**
      * Many Groups have Many Users.
      * @ManyToMany(targetEntity="App\Entity\Projet", mappedBy="employe")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups("emp:read")
      */
     private $projet;
 

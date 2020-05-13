@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\FournisseurServiceInternetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\FournisseurServiceInternetRepository;
 
 /**
  * @ORM\Entity(repositoryClass=FournisseurServiceInternetRepository::class)
+ * @ApiResource()
  */
 class FournisseurServiceInternet
 {

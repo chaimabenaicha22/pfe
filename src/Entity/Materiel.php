@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\MaterielRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MaterielRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=MaterielRepository::class)
+ * @ApiResource()
  */
 class Materiel
 {
