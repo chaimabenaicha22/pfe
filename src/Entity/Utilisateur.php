@@ -11,13 +11,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
+ * @UniqueEntity("nom")
+ * @UniqueEntity("email")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="role", type="string")
  * @ORM\DiscriminatorMap({"administrateur" = "Administrateur", "employe" = "Employe", "contact" = "Contact"})
- * @ApiResource()
+ * @ApiResource(
+ * normalizationContext={"groups"={"emp:read"}})
  */
 abstract class Utilisateur implements UserInterface
 {
@@ -25,34 +29,34 @@ abstract class Utilisateur implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
-     * @Assert\NotBlank
+     * @Groups({"emp:read"})
+     * @Assert\NotBlank()
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
-     * @Assert\NotBlank
+     * @Groups({"emp:read"})
+     * @Assert\NotBlank()
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
-     * @Assert\NotBlank
+     * @Groups({"emp:read"})
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     *
      *
      */
     private $password;

@@ -3,15 +3,19 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\ServiceHebergement;
 use Doctrine\ORM\Mapping\OneToMany;
 use App\Repository\ProjetRepository;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProjetRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ * normalizationContext={"groups"={"emp:read"}})
  */
 class Projet
 {
@@ -19,61 +23,61 @@ class Projet
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     *@Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $dateFin;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $cout;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $typeProjet;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $maintenance;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $devise;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $pays;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $coutEstime;
     /**
@@ -97,10 +101,30 @@ class Projet
     /**
      *
      * @ManyToMany(targetEntity="App\Entity\Employe", inversedBy="projet")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      *
      */
-    private $employe;
+    /* private $employe;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Technologie",mappedBy="projet")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     */
+    private $technologie;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AffecterA",mappedBy="projet")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     */
+    private $Affecter;
+    public function __construct()
+    {
+        $this->serviceH = new ArrayCollection();
+        $this->materiel = new ArrayCollection();
+        $this->contact = new ArrayCollection();
+        $this->technologie = new ArrayCollection();
+        $this->Affecter = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -214,44 +238,24 @@ class Projet
         return $this;
     }
     /**
-     *
-     * @return ServiceHebergement
-     */
-    public function getServiceH(): ServiceHebergement
-    {
-        return $this->serviceH;
-    }
-    /**
-     *@param ServiceHebergement $serviceH
-     */
-
-    public function setServiceH(ServiceHebergement $serviceH): self
-    {
-        $this->serviceH = $serviceH;
-        return $this;
-    }
-
-
-
-    /**
      * Get many Users have Many Groups.
      */
-    public function getEmploye()
+    /* public function getEmploye()
     {
         return $this->employe;
     }
-
+*/
     /**
      * Set many Users have Many Groups.
      *
      * @return  self
      */
-    public function setEmploye($employe)
+    /*public function setEmploye($employe)
     {
         $this->employe = $employe;
 
         return $this;
-    }
+    }*/
 
     /**
      * Get the value of materiel
@@ -289,6 +293,94 @@ class Projet
     public function setContact($contact)
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of serviceH
+     */
+    public function getServiceH()
+    {
+        return $this->serviceH;
+    }
+
+    /**
+     * Set the value of serviceH
+     *
+     * @return  self
+     */
+    public function setServiceH($serviceH)
+    {
+        $this->serviceH = $serviceH;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Affecter
+     */
+    public function getAffecter()
+    {
+        return $this->Affecter;
+    }
+
+    /**
+     * Set the value of Affecter
+     *
+     * @return  self
+     */
+    /* public function setAffecter($Affecter)
+    {
+        $this->Affecter = $Affecter;
+
+        return $this;
+    }*/
+    /**
+     * @return Collection|Technologie[]
+     */
+    /*public function getTechnologie(): Collection
+    {
+        return $this->technologie;
+    }
+
+    public function addTechnologie(Technologie $technologies): self
+    {
+        if (!$this->technologie->contains($technologies)) {
+            $this->technologie[] = $technologies;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Projet $technologies): self
+    {
+        if ($this->technologie->contains($technologies)) {
+            $this->technologie->removeElement($technologies);
+        }
+
+        return $this;
+    }*/
+
+    /**
+     * Get the value of technologie
+     */
+    public function getTechnologie()
+    {
+        $tech = $this->technologie->map(function ($technologie) {
+            return $technologie->getNom();
+        })->toArray();
+        return $tech;
+    }
+
+    /**
+     * Set the value of technologie
+     *
+     * @return  self
+     */
+    public function setTechnologie($technologie)
+    {
+        $this->technologie = $technologie;
 
         return $this;
     }

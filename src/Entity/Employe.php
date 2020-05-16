@@ -3,56 +3,78 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToMany;
 use App\Repository\EmployeRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EmployeRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *  normalizationContext={"groups"={"emp:read"}})
  */
 class Employe extends Utilisateur
 {
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $poste;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $service;
 
     /**
-     * Many Groups have Many Users.
      * @ManyToMany(targetEntity="App\Entity\Projet", mappedBy="employe")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
-    private $projet;
+    /*private $projet;
+    /**
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Technologie",mappedBy="employe")
+     * @ORM\JoinColumn(nullable=false)
+     *@Groups({"emp:read"})
+     */
+    private $technologie;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AffecterA",mappedBy="employe")
+     * @ORM\JoinColumn(nullable=false)
+     *@Groups({"emp:read"})
+     */
+    private $Affecter;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("emp:read")
+     *
      */
     private $photo;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
+     * @Assert\DateTime()
      */
     private $date_recrutement;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("emp:read")
+     * @Groups({"emp:read"})
      */
     private $diplome;
+    public function __construct()
+    {
+        $this->projet = new ArrayCollection();
+        $this->technologie = new ArrayCollection();
+        $this->Affecter = new ArrayCollection();
+    }
 
     public function getPoste(): ?string
     {
@@ -81,22 +103,22 @@ class Employe extends Utilisateur
     /**
      * Get many Groups have Many Users.
      */
-    public function getProjet()
+    /* public function getProjet()
     {
         return $this->projet;
-    }
+    }*/
 
     /**
      * Set many Groups have Many Users.
      *
      * @return  self
      */
-    public function setProjet($projet)
+    /* public function setProjet($projet)
     {
         $this->projet = $projet;
 
         return $this;
-    }
+    }*/
 
     public function getPhoto(): ?string
     {
@@ -130,6 +152,46 @@ class Employe extends Utilisateur
     public function setDiplome(string $diplome): self
     {
         $this->diplome = $diplome;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of technologie
+     */
+    public function getTechnologie()
+    {
+        return $this->technologie;
+    }
+
+    /**
+     * Set the value of technologie
+     *
+     * @return  self
+     */
+    public function setTechnologie($technologie)
+    {
+        $this->technologie = $technologie;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Affecter
+     */
+    public function getAffecter()
+    {
+        return $this->Affecter;
+    }
+
+    /**
+     * Set the value of Affecter
+     *
+     * @return  self
+     */
+    public function setAffecter($Affecter)
+    {
+        $this->Affecter = $Affecter;
 
         return $this;
     }

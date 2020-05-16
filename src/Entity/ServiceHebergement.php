@@ -46,7 +46,7 @@ class ServiceHebergement
     /**
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Projet", inversedBy="serviceH")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="projet_id", referencedColumnName="id")
      */
     private $projet;
     /**
